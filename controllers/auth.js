@@ -4,7 +4,13 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 
+passport.serializeUser((user, done)=>{
+  done(null, user);
+});
 
+passport.deserializeUser((user, done)=>{
+  done(null, user);
+});
 passport.use(new FacebookStrategy({
     clientID: '431330834208965',
     clientSecret: '8d96e4e31375f09a4f56ee252ec8b906',
@@ -13,7 +19,7 @@ passport.use(new FacebookStrategy({
   }, function (token, refreshToken, profile, cb) {
        console.log('checking the data@@@@@@@@@@@',token)
        console.log("checking the refreshToken@@@@",refreshToken)
-       cb(null,"success")
+       cb(null,profile)
     }
   ));
 
