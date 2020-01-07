@@ -18,7 +18,7 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'displayName', 'photos', 'email']
   }, function (token, refreshToken, profile, cb) {
        console.log('checking the data@@@@@@@@@@@',token)
-       console.log("checking the refreshToken@@@@",refreshToken)
+       console.log("checking the profile@@@@",profile)
        cb(null,profile)
     }
   ));
@@ -72,4 +72,4 @@ passport.use(new FacebookStrategy({
    
 exports.isFacebookAuthenticated = passport.authenticate('facebook');
 
-exports.isFacebookCallback = passport.authenticate('facebook', { successRedirect: '/api/blocks', failureRedirect: '/api/users' });
+exports.isFacebookCallback = passport.authenticate('facebook');

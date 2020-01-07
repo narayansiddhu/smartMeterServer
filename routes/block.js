@@ -12,7 +12,8 @@ router.get('/auth/facebook',authController.isFacebookAuthenticated)
 router.get('/auth/facebook/callback',authController.isFacebookCallback,
   function(req, res) {
     // Successful authentication, redirect home.
-   console.log("#######################################")
+   console.log("#######################################@@@@@@@@@@")
+   res.redirect('/api/blocks')
   }
 );
 
