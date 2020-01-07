@@ -6,6 +6,8 @@ const express = require('express'),
     exphbs = require('express-handlebars'),
     methodOverride = require('method-override'),
     cors = require('cors'),
+    session = require('express-session'),
+    passport = require('passport'),
     app = express();
 require('dotenv').config()
 const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -14,7 +16,18 @@ console.log("application environment : ",envConfig)
 
 require('./database');
 require('express-async-errors');
+// Express Session
 
+
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+  }));
+  
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
 // View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
