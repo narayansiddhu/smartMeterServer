@@ -6,14 +6,14 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 
 passport.use(new FacebookStrategy({
-    clientID: 'S',
-    clientSecret: 's',
-    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    clientID: '431330834208965',
+    clientSecret: '8d96e4e31375f09a4f56ee252ec8b906',
+    callbackURL: "https://smartmeterserver.herokuapp.com/api/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'photos', 'email']
   }, function (token, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
+       console.log('checking the data@@@@@@@@@@@',token)
+       console.log("checking the refreshToken@@@@",refreshToken)
+       cb(null,"success")
     }
   ));
 
@@ -62,3 +62,8 @@ passport.use(new FacebookStrategy({
           });
         }
       ));
+
+   
+exports.isFacebookAuthenticated = passport.authenticate('facebook');
+
+exports.isFacebookCallback = passport.authenticate('facebook', { successRedirect: '/api/blocks', failureRedirect: '/api/users' });
