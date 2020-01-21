@@ -3,7 +3,7 @@ const mongoose = require('mongoose'),
     envConfig = require('../config')[env];
 
 mongoose.Promise = require('bluebird');
-mongoose.connect(envConfig.db, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(envConfig.db, { useNewUrlParser: true, useUnifiedTopology: true,uri_decode_auth: true });
 
 // CONNECTION EVENTS
 mongoose.connection.on('connected', function () {
