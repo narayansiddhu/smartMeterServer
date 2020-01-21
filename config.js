@@ -9,7 +9,7 @@ module.exports = {
     },
     production: {
         rootPath: rootPath,
-        db: process.env.MONGOLAB_URI || 'mongodb://admin:siddhu@123@ds359868.mlab.com:59868/smartmeter',
+        db: process.env.MONGOLAB_URI || 'mongodb://admin:testadmin1@ds359868.mlab.com:59868/smartmeter',
         port: process.env.PORT || 80
     }
 };
