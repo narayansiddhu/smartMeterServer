@@ -2,6 +2,7 @@ var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+const User = require('../models/user');
 
 
 passport.serializeUser((user, done)=>{
@@ -24,30 +25,25 @@ passport.use(new FacebookStrategy({
   ));
 
 
-  passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password'
-  },
-    function (email, password, callback) {
-      console.log('at local strategy');
+  passport.use(new LocalStrategy(
+    function (username, password, done) {
+      User.getUserByUsername(username, function (err, user) {
+        if (err) throw err;
+        if (!user) {
+          return done(null, false, { message: 'Unknown User' });
+        }
   
-      User.findOne({ email: email }, function (err, user) {
-        if (err) { return callback(err); }
-  
-        // No user found with that username
-        if (!user) { return callback(null, false); }
-  
-        // // Make sure the password is correct
-        // user.verifyPassword(password, function(err, isMatch) {
-        //   if (err) { return callback(err); }
-  
-        //   // Password did not match
-        //   if (!isMatch) { return callback(null, false);}
-        console.log('!!Found user with name : ' + user.name);
-        // Success
-        return callback(null, user);
+        User.comparePassword(password, user.password, function (err, isMatch) {
+          if (err) throw err;
+          if (isMatch) {
+            return done(null, user);
+          } else {
+            return done(null, false, { message: 'Invalid password' });
+          }
+        });
       });
     }));
+  
 
     passport.use(new BearerStrategy(
         function (accessToken, callback) {
