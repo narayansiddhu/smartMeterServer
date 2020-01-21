@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const UserController = {
-     registerUser(req, res) {
+    registerUser(req, res) {
         var email = req.body.email;
         var username = req.body.username;
         var password = req.body.password;
@@ -9,7 +9,15 @@ const UserController = {
             username: username,
             password: password
         });    
-        res.send("hello world! welcome to the users list")
+        User.createUser(newUser, function (err, user) {
+            if (err){
+                console.log(err)
+            }else{
+               res.send({
+                   "data":"success"
+               })
+            }
+        });
     }
 };
 

@@ -69,3 +69,5 @@ passport.use(new FacebookStrategy({
 exports.isFacebookAuthenticated = passport.authenticate('facebook');
 
 exports.isFacebookCallback = passport.authenticate('facebook');
+
+exports.isLocalAuthenticate = passport.authenticate('local')

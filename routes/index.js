@@ -1,4 +1,3 @@
-const express = require('express');
 const blockRoute = require('./block');
 const meterRoute = require('./meter');
 const userRoute = require('./user');
