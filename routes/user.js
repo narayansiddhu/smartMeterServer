@@ -20,7 +20,7 @@ router.post('/login', authController.isLocalAuthenticate,function(req, res){
     res.send("Auth data")
   });
 router.get('/getallusers', ensureAuthenticated,function(req, res){
-  res.send("Auth data")
+  res.send("Auth data authicated Data")
 });
 router.get('/noauth',function(req, res){
     res.send("Not Authenticated ")
