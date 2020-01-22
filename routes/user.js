@@ -10,7 +10,9 @@ router.get('/login',function(req, res){
     res.render('login')
   });
 router.post('/login', authController.isLocalAuthenticate,function(req, res){
-    res.send("Auth data")
+    res.json({
+       "status":"success"
+    })
   });
 router.get('/getallusers', ensureAuthenticated,function(req, res){
   res.json({
