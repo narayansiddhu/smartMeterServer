@@ -18,6 +18,44 @@ passport.use(new FacebookStrategy({
     }
   ));
 
+  function uid(len) {
+    var buf = []
+        , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+        , charlen = chars.length;
+
+    for (var i = 0; i < len; ++i) {
+        buf.push(chars[getRandomInt(0, charlen - 1)]);
+    }
+
+    return buf.join('');
+};
+  function createAccessToken(client, user_id, callback) {
+    User.findOne({_id: user_id}, function(err, user) {
+        if(err) { console.log(err); callback(err); } else {
+            var token = new Token({
+                access_token: uid(256),
+                token_type: 'Bearer',
+                clientId: client.clientId,
+                userId: user._id,
+              });
+            //  console.log(util.inspect(token, false, null));
+              // Save the access token and check for errors
+              token.save(function (err) {
+                if (err) {  console.log(err); return callback(err); }
+                User.findByIdAndUpdate(
+                  token.userId,
+                  { $push: { "access_tokens": { access_token: token.access_token, token_type: 'Bearer', clientId: client.clientId } } },
+                  { safe: true, new: true },
+                  function (err, model) {
+                    callback(null, token.access_token);
+                  }
+                );
+                // callback(null, token);
+              });
+        }
+    })
+}
+
 
   passport.use(new LocalStrategy(
     function (username, password, done) {
@@ -30,14 +68,26 @@ passport.use(new FacebookStrategy({
         User.comparePassword(password, user.password, function (err, isMatch) {
           if (err) throw err;
           if (isMatch) {
-            console.log('user:@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ', user);
-            return done(null, user);
+            var client = {
+              clientId : '12341241243234',  
+            }
+            createAccessToken(client,user._id,function(err,result){
+              if(err){
+
+              }else{
+                console.log("checking the data!!!!!!!!!!!",result)
+                return done(null, user);
+              }
+            })
+
           } else {
             return done(null, false, { message: 'Invalid password' });
           }
         });
       });
     }));
+
+
   
     passport.serializeUser(function (user, done) {
       done(null, user.id);

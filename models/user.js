@@ -12,7 +12,12 @@ var UserSchema = mongoose.Schema({
 	},
 	email: {
 		type: String
-	}
+	},
+	access_tokens: [{
+		access_token: { type: String },
+		token_type: { type: String },
+		clientId: { type: String }
+	  }],
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

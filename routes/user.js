@@ -9,6 +9,7 @@ router.post('/register', UserController.registerUser);
 router.get('/login',function(req, res){
     res.render('login')
   });
+
 router.post('/login', authController.isLocalAuthenticate,function(req, res){
     res.json({
        "status":"success"
