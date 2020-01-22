@@ -13,7 +13,15 @@ router.post('/login', authController.isLocalAuthenticate,function(req, res){
     res.send("Auth data")
   });
 router.get('/getallusers', ensureAuthenticated,function(req, res){
-  res.send("This is Authenticated Data")
+  res.json({
+      "data":[
+          {"name":"sid"},
+          {"name":"veeru"},
+          {"name":"ravi"},
+          {"name":"anil"},
+          {"name":"Sai"},
+      ]
+  })
   
 });
 router.get('/noauth',function(req, res){
