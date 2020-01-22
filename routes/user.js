@@ -27,7 +27,10 @@ router.get('/getallusers', ensureAuthenticated,function(req, res){
   
 });
 router.get('/noauth',function(req, res){
-    res.send("Not Authenticated ")
+    res.json({
+        "status":"Error",
+        "data":"Not Authenticated"
+     })
 });
 router.get('/logout', function (req, res) {
 	req.logout();
