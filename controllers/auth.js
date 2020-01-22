@@ -128,3 +128,4 @@ exports.isFacebookAuthenticated = passport.authenticate('facebook');
 exports.isFacebookCallback = passport.authenticate('facebook');
 
 exports.isLocalAuthenticate = passport.authenticate('local')
+exports.isBearerAuthenticated = passport.authenticate('bearer');

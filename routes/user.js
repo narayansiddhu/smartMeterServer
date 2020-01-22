@@ -11,7 +11,11 @@ router.get('/login',function(req, res){
   });
 
 
-router.get('/testToken',authController.isBearerAuthenticated);
+  router.get('/testToken',authController.isBearerAuthenticated,function(req, res){
+   res.json({
+       "data":"successfully Login Token"
+   })
+  });
 
 
 router.post('/login', authController.isLocalAuthenticate,function(req, res){
