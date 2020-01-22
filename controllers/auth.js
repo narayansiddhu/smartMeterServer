@@ -3,6 +3,7 @@ var BearerStrategy = require('passport-http-bearer').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('../models/user');
+const Token = require('../models/token');
 
 
 
