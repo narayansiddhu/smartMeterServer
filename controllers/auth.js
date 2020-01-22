@@ -102,9 +102,11 @@ function getRandomInt(min, max) {
         done(err, user);
       });
     });
+    
+    
     passport.use(new BearerStrategy(
         function (accessToken, callback) {
-          console.log('accessToken@@@@@@@@@@@@@@@@@@@@@@@@@@@@: ', accessToken);
+          console.log('accessToken@@@@@@@@@@@@@@@@@@@@@@@@@@@@:@@@@@@@@ ', accessToken);
           Token.findOne({ access_token: accessToken }, function (err, token) {
             if (err) { return callback(err); }
       
@@ -129,4 +131,4 @@ exports.isFacebookAuthenticated = passport.authenticate('facebook');
 exports.isFacebookCallback = passport.authenticate('facebook');
 
 exports.isLocalAuthenticate = passport.authenticate('local')
-exports.isBearerAuthenticated = passport.authenticate('bearer');
+exports.isBearerAuthenticated = passport.authenticate('bearer', { session: false });
