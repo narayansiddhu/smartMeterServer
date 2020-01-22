@@ -6,7 +6,9 @@ const { UserController } = require('../controllers');
 
 router.post('/register', UserController.registerUser);
 
-
+router.get('/login',function(req, res){
+    res.render('login')
+  });
 router.post('/login', authController.isLocalAuthenticate,function(req, res){
     res.send("Auth data")
   });
