@@ -30,6 +30,9 @@ passport.use(new FacebookStrategy({
 
     return buf.join('');
 };
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
   function createAccessToken(client, user_id, callback) {
     User.findOne({_id: user_id}, function(err, user) {
         if(err) { console.log(err); callback(err); } else {
