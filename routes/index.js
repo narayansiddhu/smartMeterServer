@@ -4,8 +4,5 @@ const Request = require('./Request');
 const User = require('./User')
 
 module.exports = function (app) {
-    app.use('/api', Donation);
-    app.use('/api', Profile);
-    app.use('/api', Request);
     app.use('/api', User)
 };
