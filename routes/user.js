@@ -6,8 +6,21 @@ const { UserController } = require('../controllers');
 
 router.post('/register', UserController.registerUser);
 
-router.get('/getAlluers', authController.isFacebookCallback,function(req, res){
-    res.send("This the Auth Data")
+router.get('/getallusers', ensureAuthenticated,function(req, res){
+  res.send("Auth data")
 });
+router.get('/noauth',function(req, res){
+    res.send("Not Authenticated ")
+  });
+  
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        //req.flash('error_msg','You are not logged in');
+        res.redirect('api/noauth');
+    }
+}
+
 
 module.exports = router;
