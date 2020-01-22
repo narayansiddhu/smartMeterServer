@@ -7,6 +7,7 @@ const express = require('express'),
     methodOverride = require('method-override'),
     cors = require('cors'),
     passport = require('passport'),
+    session = require('express-session')
     app = express();
 require('dotenv').config()
 const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -28,6 +29,13 @@ app.engine('handlebars', exphbs({defaultLayout:'layout'}));
 app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// Express Session
+app.use(session({
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
 app.use(cors());
 app.use(methodOverride());
 app.use(cookieParser());
