@@ -8,7 +8,7 @@ router.post('/register', UserController.registerUser);
 
 
 router.post('/login', authController.isLocalAuthenticate,function(req, res){
-    res.send({data:res})
+    res.send("Auth data")
   });
 router.get('/getallusers', ensureAuthenticated,function(req, res){
   res.send("Auth data")
