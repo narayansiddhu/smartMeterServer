@@ -3,7 +3,14 @@ const router = express.Router()
 const authController = require("../controllers/auth");
 const { UserController } = require('../controllers');
 
-
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        //req.flash('error_msg','You are not logged in');
+        res.redirect('/api/noauth');
+    }
+}
 router.post('/register', UserController.registerUser);
 
 router.get('/login',function(req, res){
@@ -19,14 +26,7 @@ router.get('/noauth',function(req, res){
     res.send("Not Authenticated ")
   });
   
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        //req.flash('error_msg','You are not logged in');
-        res.redirect('/api/noauth');
-    }
-}
+
 
 
 module.exports = router;
