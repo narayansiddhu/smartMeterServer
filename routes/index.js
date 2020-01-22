@@ -1,10 +1,10 @@
 const Donation = require('./Donation');
 const Profile = require('./Profile');
 const Request = require('./Request');
-const sdsdfsd = require('./Users');
+const UserDetails = require('./User');
 
 module.exports = function (app) {
-    app.use('/api', sdsdfsd)
+    app.use('/api', UserDetails)
     app.use('/api', Donation);
     app.use('/api', Profile);
     app.use('/api', Request);
