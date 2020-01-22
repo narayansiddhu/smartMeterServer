@@ -17,12 +17,12 @@ require('./database');
 require('express-async-errors');
 // Express Session
 
-app.use(session({
-    secret: "authorize",
-    key: "authorize",
-    saveUninitialized: true,
-    resave: false
-}));
+// app.use(session({
+//     secret: "authorize",
+//     key: "authorize",
+//     saveUninitialized: true,
+//     resave: false
+// }));
   
 // Passport init
 app.use(passport.initialize());
