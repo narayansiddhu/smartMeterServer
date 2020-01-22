@@ -104,6 +104,7 @@ function getRandomInt(min, max) {
     });
     passport.use(new BearerStrategy(
         function (accessToken, callback) {
+          console.log('accessToken@@@@@@@@@@@@@@@@@@@@@@@@@@@@: ', accessToken);
           Token.findOne({ access_token: accessToken }, function (err, token) {
             if (err) { return callback(err); }
       
