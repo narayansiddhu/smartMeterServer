@@ -5,13 +5,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 const User = require('../models/user');
 
 
-passport.serializeUser((user, done)=>{
-  done(null, user);
-});
 
-passport.deserializeUser((user, done)=>{
-  done(null, user);
-});
 passport.use(new FacebookStrategy({
     clientID: '431330834208965',
     clientSecret: '8d96e4e31375f09a4f56ee252ec8b906',
@@ -45,7 +39,15 @@ passport.use(new FacebookStrategy({
       });
     }));
   
-
+    passport.serializeUser(function (user, done) {
+      done(null, user.id);
+    });
+    
+    passport.deserializeUser(function (id, done) {
+      User.getUserById(id, function (err, user) {
+        done(err, user);
+      });
+    });
     passport.use(new BearerStrategy(
         function (accessToken, callback) {
           Token.findOne({ access_token: accessToken }, function (err, token) {
