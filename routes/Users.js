@@ -12,9 +12,11 @@ router.get('/login',function(req, res){
 
 router.post('/register', UserController.registerUser);
 
+router.post('/login', AuthController.isLocalAuthenticate,UserController.login);
+
 router.get('/users',AuthController.isBearerAuthenticated,UserController.usersList);
 
-router.post('/login', AuthController.isLocalAuthenticate,UserController.login);
+
 
 
 module.exports = router;
