@@ -7,61 +7,58 @@ const Token = require('../models/token');
 
 
 
+
+function uid(len) {
+  var buf = []
+      , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      , charlen = chars.length;
+
+  for (var i = 0; i < len; ++i) {
+      buf.push(chars[getRandomInt(0, charlen - 1)]);
+  }
+
+  return buf.join('');
+};
+function getRandomInt(min, max) {
+return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createAccessToken(client, user_id, callback) {
+  User.findOne({_id: user_id}, function(err, user) {
+      if(err) { console.log(err); callback(err); } else {
+          var token = new Token({
+              access_token: uid(256),
+              token_type: 'Bearer',
+              clientId: client.clientId,
+              userId: user._id,
+            });
+            token.save(function (err) {
+              if (err) {  console.log(err); return callback(err); }
+              User.findByIdAndUpdate(
+                token.userId,
+                { $push: { "access_tokens": { access_token: token.access_token, token_type: 'Bearer', clientId: client.clientId } } },
+                { safe: true, new: true },
+                function (err, model) {
+                  callback(null, token.access_token);
+                }
+              );
+            });
+      }
+  })
+}
+
+//Facebook Auth
 passport.use(new FacebookStrategy({
     clientID: '431330834208965',
     clientSecret: '8d96e4e31375f09a4f56ee252ec8b906',
     callbackURL: "https://smartmeterserver.herokuapp.com/api/auth/facebook/callback",
     profileFields: ['id', 'displayName', 'photos', 'email']
   }, function (token, refreshToken, profile, cb) {
-       console.log('checking the data@@@@@@@@@@@',token)
-       console.log("checking the profile@@@@",profile)
        cb(null,profile)
     }
   ));
 
-  function uid(len) {
-    var buf = []
-        , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-        , charlen = chars.length;
-
-    for (var i = 0; i < len; ++i) {
-        buf.push(chars[getRandomInt(0, charlen - 1)]);
-    }
-
-    return buf.join('');
-};
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-  function createAccessToken(client, user_id, callback) {
-    User.findOne({_id: user_id}, function(err, user) {
-        if(err) { console.log(err); callback(err); } else {
-            var token = new Token({
-                access_token: uid(256),
-                token_type: 'Bearer',
-                clientId: client.clientId,
-                userId: user._id,
-              });
-            //  console.log(util.inspect(token, false, null));
-              // Save the access token and check for errors
-              token.save(function (err) {
-                if (err) {  console.log(err); return callback(err); }
-                User.findByIdAndUpdate(
-                  token.userId,
-                  { $push: { "access_tokens": { access_token: token.access_token, token_type: 'Bearer', clientId: client.clientId } } },
-                  { safe: true, new: true },
-                  function (err, model) {
-                    callback(null, token.access_token);
-                  }
-                );
-                // callback(null, token);
-              });
-        }
-    })
-}
-
-
-  passport.use(new LocalStrategy(
+passport.use(new LocalStrategy(
     function (username, password, done) {
       User.getUserByUsername(username, function (err, user) {
         if (err) throw err;
@@ -79,7 +76,6 @@ function getRandomInt(min, max) {
               if(err){
 
               }else{
-                console.log("checking the data!!!!!!!!!!!",result)
                 return done(null, user);
               }
             })
@@ -89,10 +85,8 @@ function getRandomInt(min, max) {
           }
         });
       });
-    }));
+  }));
 
-
-  
     passport.serializeUser(function (user, done) {
       done(null, user.id);
     });
@@ -103,14 +97,11 @@ function getRandomInt(min, max) {
       });
     });
     
-    
     passport.use(new BearerStrategy(
         function (accessToken, callback) {
-          console.log('accessToken@@@@@@@@@@@@@@@@@@@@@@@@@@@@:@@@@@@@@ ', accessToken);
           Token.findOne({ access_token: accessToken }, function (err, token) {
             if (err) { return callback(err); }
-      
-            // No token found
+
             if (!token) { return callback(null, false); }
       
             User.findOne({ _id: token.userId }, function (err, user) {
@@ -127,8 +118,6 @@ function getRandomInt(min, max) {
 
    
 exports.isFacebookAuthenticated = passport.authenticate('facebook');
-
 exports.isFacebookCallback = passport.authenticate('facebook');
-
 exports.isLocalAuthenticate = passport.authenticate('local')
 exports.isBearerAuthenticated = passport.authenticate('bearer', { session: false });

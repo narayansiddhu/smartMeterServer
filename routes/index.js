@@ -1,9 +1,11 @@
-const blockRoute = require('./block');
-const meterRoute = require('./meter');
-const userRoute = require('./user');
+const Donation = require('./Donation');
+const Profile = require('./Profile');
+const Request = require('./Request');
+const User = require('./User')
 
 module.exports = function (app) {
-    app.use('/api', blockRoute);
-    app.use('/api', userRoute);
-    app.use('/api', meterRoute);
+    app.use('/api', Donation);
+    app.use('/api', Profile);
+    app.use('/api', Request);
+    app.use('/api',User)
 };

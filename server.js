@@ -1,14 +1,13 @@
-const express = require('express'),
-    mongoose = require('mongoose'),
-    bodyParser = require('body-parser'),
-    cookieParser = require('cookie-parser'),
-    path = require('path'),
-    exphbs = require('express-handlebars'),
-    methodOverride = require('method-override'),
-    cors = require('cors'),
-    passport = require('passport'),
-    session = require('express-session')
-    app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const exphbs = require('express-handlebars');
+const methodOverride = require('method-override');
+const cors = require('cors');
+const passport = require('passport');
+const session = require('express-session');
+const app = express();
 require('dotenv').config()
 const env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const envConfig = require('./config')[env];
@@ -18,16 +17,15 @@ require('./database');
 require('express-async-errors');
 // Express Session
 
-
 app.use(session({
-    secret: 'secret',
+    secret: "authorize",
+    key: "authorize",
     saveUninitialized: true,
-    resave: true
+    resave: false
 }));
   
 // Passport init
 app.use(passport.initialize());
-app.use(passport.session());
 // View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));

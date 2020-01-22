@@ -1,58 +1,20 @@
 const express = require('express')
 const router = express.Router()
-const authController = require("../controllers/auth");
-const { UserController } = require('../controllers');
+const { UserController,AuthController } = require('../controllers');
 
+
+
+
+//Test server side render login Page
+router.get('/login',function(req, res){
+    res.render('login')
+});
 
 router.post('/register', UserController.registerUser);
 
-router.get('/login',function(req, res){
-    res.render('login')
-  });
+router.get('/users',AuthController.isBearerAuthenticated,UserController.usersList);
 
+router.post('/login', AuthController.isLocalAuthenticate,UserController.login);
 
-  router.get('/testToken',authController.isBearerAuthenticated,function(req, res){
-   res.json({
-       "data":"successfully Login Token"
-   })
-  });
-
-
-router.post('/login', authController.isLocalAuthenticate,function(req, res){
-    res.json({
-       "status":"success"
-    })
-  });
-router.get('/getallusers', ensureAuthenticated,function(req, res){
-  res.json({
-      "data":[
-          {"name":"sid"},
-          {"name":"veeru"},
-          {"name":"ravi"},
-          {"name":"anil"},
-          {"name":"Sai"},
-      ]
-  })
-  
-});
-router.get('/noauth',function(req, res){
-    res.json({
-        "status":"Error",
-        "data":"Not Authenticated"
-     })
-});
-router.get('/logout', function (req, res) {
-	req.logout();
-	res.redirect('/api/login');
-});  
-
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        //req.flash('error_msg','You are not logged in');
-        res.redirect('/api/noauth');
-    }
-}
 
 module.exports = router;

@@ -18,6 +18,24 @@ const UserController = {
                })
             }
         });
+    },
+    usersList(req,res){
+        User.find({},function(err,user){
+            if(err){
+                console.log(err)
+            }else{
+                res.json({
+                    "status":"success",
+                    "data":user
+                })
+            }
+        })
+    },
+    login(req,res){  
+            res.json({
+                "status":"success",
+                "data":req.user
+             })  
     }
 };
 
